@@ -1,0 +1,8 @@
+First version is 0.1, released in February 2004.
+
+Version 0.1-1:
+
+2004/02/17: fix a bug in ZZ_pXCantorpoly.c that occured if the division
+polynomials were asked for several successive curves.
+
+

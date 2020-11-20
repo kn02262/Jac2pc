@@ -1,0 +1,121 @@
+This file is part of the NTLJac2 Package.
+Copyright (C) 2003 Pierrick Gaudry.
+
+The NTLJac2 Package is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+The NTLJac2 Package is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with the NTLJac2 Package; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+
+                   The NTLJac2 Package
+
+             Tools for genus 2 Jacobians in NTL
+
+
+
+This package provides NTL functions to deal with jacobians of genus 2
+curves over finite fields. The main interest of the author is to test
+algorithms related to Schoof's algorithm. Therefore you'll find functions
+to handle torsion points.
+
+Documentation should appear some day in the doc directory...
+
+
+
+
+=====================================================================
+
+Installation
+
+=====================================================================
+
+
+Just type
+  make
+and pray ;-)
+OK. Here is my local configuration, so you can try to imitate:
+* A linux OS
+* g++ is version 3.2
+* NTL is version 5.3.1
+* GMP is version 4.1.2
+
+GMP is compiled with no specific options (maybe disable-alloca, but this
+should not be necessary).
+NTL is compiled with NTL_STD_CXX and NTL_GMP_LIP. 
+
+They are installed in standard places, so that -lgmp and -lntl do work
+and I do not need to add -I... to tell where to find the .h files. If
+your version of NTL or GMP is not in the standard places, then you should
+modify the variables FLAGS and LIBS accordingly in Makefile.
+
+In principle, I used the NTL macros for the namespace stuff, so even
+without NTL_STD_CXX, this should compile. I didn't try.
+
+Typing "make" should produce a binary called "main" (I have an enormous
+imagination). To test it, just try
+  ./main < input
+This should perform a Schoof step for ell=5 on a random curve.
+
+Another binary should have been built: "LMPMCT". To test it, try
+  ./LMPMCT < input_LMPMCT
+This perform a kangaroo-like variant of the algorithm by Matsuo, Chao and
+Tsujii (Ants5).
+
+=====================================================================
+
+Usage
+
+=====================================================================
+
+When run, "main" reads on standard input the following information
+  p
+  f
+  ell
+and then computes (s1,s2) mod ell for the curve y^2=f(x) over GF(p).
+f should be a monic degree 5 polynomial in the Magma format: 
+[ f0, f1, f2, f3, f4, 1 ]
+
+No checking is done: be sure that
+* p is prime (not too small, otherwise, interpolation won't work)
+* f is squarefree
+* the corresponding curve is not "special" (random is better)
+* ell is an odd prime (ell=3 should work but I'm not sure).
+
+The messages during the computation are sent on stderr, so you can
+redirect to /dev/null without loosing the result which is sent on stdout.
+
+Once you have collect enough modular information, you can run LMPMCT to
+finish the computation. It takes in input:
+  p
+  f
+  m
+  s1 mod m
+  s2 mod m
+and should return the group order.
+
+Enjoy!
+
+=====================================================================
+
+Bugs, comments
+
+=====================================================================
+
+Please send any comment or bug report to
+  Pierrick Gaudry <gaudry@lix.polytechnique.fr>
+
+I did not spend too much time making the code portable. The code is
+high-level, so portability issues should be either small details with
+#include, or C++ language variation.  Tell me if something got wrong with
+your local configuration.
+

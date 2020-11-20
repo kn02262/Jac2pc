@@ -1,0 +1,52 @@
+Description of the class:
+
+                     ZZ_pJac2
+
+
+An object of this class is a divisor in the Jacobian of a genus 2 curve
+defined over Z/pZ. The finite field Z/pZ is the same for all the curves
+and is the one stored in the ZZ_p structure. The curve is the same for
+all divisors. It is stored in with an "Info" class, thus imitating the
+behaviour of ZZ_p. For the moment, no backup/restore mechanism is
+provided, but this could be added with no additional problem.
+
+Only the "imaginary" case is handled, i.e. curves of the form y^2 = f(x)
+with deg(f) = 5 and f monic, squarefree.
+
+Before declaring the first divisor, you should have done
+  ZZ_p::init(...);     // define Z/pZ
+  ZZ_pJac2::init(f);   // define the curve y^2 = f(x)
+
+[ NB: declaring divisor before giving the curve is possible but dangerous ]
+
+Then you can declare divisor, and use classical arithmetic operators with
+them. For isntance:
+
+{
+  ZZ_pJac2 D1, D2, D3;
+
+  random(D1);
+  D2 = ZZ_pJac2::random();
+  D1 += D2;
+  D3 = D1 - D2;
+  mul(D2, D3, 243); 
+}
+
+For exact prototypes of the functions, you'd better read the file
+ZZ_pJac2.h, which will remain uptodate with respect to the real
+implementation ;-). The group law is implemented using T. Lange 's affine
+formulae, so it should be reasonnably fast. On the other hand, no
+optimization is done to avoid copys, make lazy reductions, minimize the
+number of temporary buffers... If your p fits in a few machine words,
+then you can probably divide the runtime by a big factor.
+
+An object of the class ZZ_pJac2 has 5 fields:
+   ZZ_p u0, u1, u2, v0, v1;
+meaning the Mumford representation:
+   D = < u2*x^2 + u1*x + u0, v1*x + v0 >
+
+
+Warning: no testing is done!!! If you give a singular curve, or if you
+build a divisor that is not on the Jacobian, then it is *your* fault!
+[this will change some day]
+
