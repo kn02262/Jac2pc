@@ -12,7 +12,7 @@
 #./LMPMCT -p 16752341 -f 9777942,13833081,11033555,1335360,15030548 --nthreads 8
 #./LMPMCT -p 16752341 -f 9777942,13833081,11033555,1335360,15030548 --nthreads 4
 #./LMPMCT -p 16752341 -f 9777942,13833081,11033555,1335360,15030548 --nthreads 1
-# Lena's example input (outputs different results after restart):
+# Small input with wrong output (outputs different results after restart):
 ./LMPMCT -p 1009 -f 32,19,421,643,523 --nthreads 8
 #./LMPMCT -p 1009 -f 32,19,421,643,523 --nthreads 4
 #./LMPMCT -p 1009 -f 32,19,421,643,523 --nthreads 1

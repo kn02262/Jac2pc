@@ -2,7 +2,7 @@
 
 
 Ntrials=50
-allThreads=(12 8 4 2 1)
+allThreads=(8 4 2)
 
 p=100000000003
 coeff0=67183483819,72263994727,14731848372,35549991545,44951725753
@@ -26,8 +26,18 @@ for nthread in ${allThreads[@]}; do
 
 
 
+	for i in $(seq 1 $Ntrials)
+	do	
+		(./LMPMCT -p ${p}  -f ${coeff0} --nthreads $nthread -T 4) 1>>$filename_out
+	done
+
 	for i in {1..10}
 	do	
-		(./LMPMCT -p ${p}  -f ${coeff0} --nthreads $nthread) 1>>$filename_out
+		(./LMPMCT -p ${p}  -f ${coeff0} --nthreads $nthread -T 8) 1>>$filename_out
+	done
+
+	for i in {1..10}
+	do	
+		(./LMPMCT -p ${p}  -f ${coeff0} --nthreads $nthread -T 12) 1>>$filename_out
 	done
 done

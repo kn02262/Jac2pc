@@ -47,10 +47,10 @@ ZZ_pX ZZ_pJac2::u() const {
   SetCoeff(P, 0, u0); SetCoeff(P, 1, u1); SetCoeff(P, 2, u2);
   return P;
 }
-    
+
 ZZ_pX ZZ_pJac2::v() const {
   ZZ_pX P;
-  SetCoeff(P, 0, v0); SetCoeff(P, 1, v1); 
+  SetCoeff(P, 0, v0); SetCoeff(P, 1, v1);
   return P;
 }
 
@@ -66,7 +66,7 @@ ZZ_pJac2 operator+(const ZZ_pJac2& D1, const ZZ_pJac2& D2) {
 }
 
 ZZ_pJac2 operator-(const ZZ_pJac2& D1, const ZZ_pJac2& D2) {
-  ZZ_pJac2 E; 
+  ZZ_pJac2 E;
   sub(E, D1, D2);
   return E;
 }
@@ -110,7 +110,7 @@ ZZ_pJac2 operator*(const ZZ_pJac2& D1, const long k) {
   mul(E, k, D1);
   return E;
 }
-  
+
 
 int IsZero(const ZZ_pJac2& D) {
   return ((D.u2 == 0) && (D.u1 == 0) && (D.u0 == 1));
@@ -140,7 +140,7 @@ void random(ZZ_pJac2& D) {
   ZZ_p x1, x2, y1, y2;
   ZZ yy1, yy2;
   ZZ p = ZZ_p::modulus();
-  
+
 	  do {
 		x1 = random_ZZ_p();
 		yy1 = rep(eval(ZZ_pJac2::f(), x1));
@@ -152,7 +152,7 @@ void random(ZZ_pJac2& D) {
 		yy2 = rep(eval(ZZ_pJac2::f(), x2));
 	  } while (Jacobi(yy2, p) != 1);
 	  y2 = to_ZZ_p(SqrRootMod(yy2, p));
-	
+
   D.u2 = 1;
   D.u1 = -(x1+x2);
   D.u0 = x1*x2;
@@ -165,8 +165,8 @@ void mul(ZZ_pJac2& E, const ZZ_pJac2& D, const ZZ& k) {
   if (k == 0) {
     clear(E);
     return;
-  } 
-  
+  }
+
   ZZ_pJac2 D1, D2;
   ZZ m;
 
@@ -179,7 +179,7 @@ void mul(ZZ_pJac2& E, const ZZ_pJac2& D, const ZZ& k) {
   }
 
   while (m > 0) {
-    if (IsOdd(m)) 
+    if (IsOdd(m))
       add(D2, D1, D2);
     m >>= 1;
     duplicate(D1, D1);
@@ -194,13 +194,13 @@ void addCantor(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
   a1 = D.u(); b1 = D.v();
   a2 = E.u(); b2 = E.v();
   f = ZZ_pJac2::f();
-  
+
   // Composition
-  
+
   ZZ_pX d0, h1, h2;
   ZZ_pX d, l, h3;
   ZZ_pX a, b;
-  
+
   XGCD(d0, h1, h2, a1, a2);
   if (deg(d0) > 0) {
     ZZ_pX s = b1 + b2;
@@ -208,7 +208,7 @@ void addCantor(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
       d = d0; l = 1; h3 = 0;
     } else
       XGCD(d, l, h3, d0, s);
-    
+
     h1 *= l;
     h2 *= l;
     a = (a1*a2) / sqr(d);
@@ -237,7 +237,7 @@ void addCantor(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
     return;
   }
   MakeMonic(a);
-  
+
   F.u0 = coeff(a, 0);
   F.u1 = coeff(a, 1);
   F.u2 = coeff(a, 2);
@@ -256,13 +256,13 @@ void addLange(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
   u21 = E.u1; u20 = E.u0;
   v11 = D.v1; v10 = D.v0;
   v21 = E.v1; v20 = E.v0;
-  
+
   ZZ_p z1, z2, z3, r, inv1, inv0;
   ZZ_p w0, w1, w2, w3, w4, w5, sp1, sp0, spp0;
   ZZ_p lp2, lp1, lp0;
   ZZ_p up0, up1, vp0, vp1;
   ZZ_p aux;
-  
+
   // Step 1
   sub(z1, u11, u21); sub(z2, u20, u10);
   mul(z3, z1, u11); add(z3, z3, z2);
@@ -272,7 +272,7 @@ void addLange(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
     addCantor(F, D, E);
     return;
   }
-  
+
   // Step 2
   inv1 = z1; inv0 = z3;
 
@@ -318,10 +318,10 @@ void addLange(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
     mul(w2, up0, w1); sub(w2, w2, lp0);
     mul(vp0, w2, w3); sub(vp0, vp0, v20);
   } else {
-    addCantor(F, D, E); 
+    addCantor(F, D, E);
     return;
   }
-  
+
   F.u2 = 1;
   F.u1 = up1;
   F.u0 = up0;
@@ -330,7 +330,7 @@ void addLange(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) {
 }
 
 void addLauter(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) { // Warning: requires a curve with f4=0
-	
+
   if ((D.u2 == 0) || (E.u2 == 0)) {
     addCantor(F, D, E);
     return;
@@ -341,22 +341,22 @@ void addLauter(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) { // Warning: 
   u1d = E.u1; u0d = E.u0;
   v1 = D.v1; v0 = D.v0;
   v1d = E.v1; v0d = E.v0;
-  
+
   sqr(u1s, u1);
   mul(u01, u1, u0);
   sqr(u1ds, u1d);
   mul(u01d, u0d, u1d);
-  
+
   ZZ_p uS, v0D, v1D, M1, M2, M3, M4;
   ZZ_p t1, t2, t3, t4, l2, l3, d, aux1, aux2;
   ZZ_p A, B, C, Dc, Ec, Cs;
   ZZ_p l3sq, Csq, Dcsq;
   ZZ_p u1dd, u0dd, uu1dd, uu0dd, v1dd, v0dd;
-  
+
   // Todo: rewrite in ASM-style:
   //add(uS, u1, u1d); sub(v0D, v0, v0d); sub(v1D, v1, v1d); sub(M1, u1s, u0); sub(M1, M1, u1ds); sub(M1, M1, u0d); sub(M2, u01d, u01);
   //sub(M3, u1, u1d); sub(M4, u0d, u0); sub(aux1, M2, v0D); sub(aux2, v1D, M1); mul(t1, aux1, aux2); t2=(-v0D-M2)*(v1D+M1);
-  
+
   uS=u1+u1d; v0D=v0-v0d; v1D=v1-v1d; M1=u1s-u0-u1ds+u0d; M2=u01d-u01;
   M3=u1-u1d; M4=u0d-u0; t1=(M2-v0D)*(v1D-M1); t2=(-v0D-M2)*(v1D+M1); //2M
   t3=(-v0D+M4)*(v1D-M3); t4=(-v0D-M4)*(v1D+M3); //2M
@@ -369,7 +369,7 @@ void addLauter(ZZ_pJac2& F, const ZZ_pJac2& D, const ZZ_pJac2& E) { // Warning: 
   u0dd = Dcsq + C*(v1+v1d) -((u1dd-Cs)*uS+(u1s+u1ds))/2; //2M + 1S
   sqr(uu1dd, u1dd); mul(uu0dd, u1dd, u0dd);  v1dd = Dc*(u1-u1dd)+ uu1dd-u0dd-u1s+u0; //2M + 1S
   v0dd = Dc*(u0-u0dd) + uu0dd - u01; v1dd = -(Ec*v1dd + v1); v0dd = -(Ec*v0dd + v0); //3M
-  
+
   F.u2 = 1;
   F.u1 = u1dd;
   F.u0 = u0dd;
@@ -386,7 +386,7 @@ static void duplicateLange(ZZ_pJac2& E, const ZZ_pJac2& D) {
   ZZ_p u1, u0, v1, v0;
   u1 = D.u1; u0 = D.u0;
   v1 = D.v1; v0 = D.v0;
-  
+
   ZZ_p vt1, vt0, r;
   ZZ_p w0, w1, w2, w3, w4, w5;
   ZZ_p inv0, inv1;
@@ -395,21 +395,21 @@ static void duplicateLange(ZZ_pJac2& E, const ZZ_pJac2& D) {
   ZZ_p up0, up1, vp0, vp1;
   ZZ_p f4u1;
   ZZ_p aux;
- 
+
   // Step 1
   add(vt1, v1, v1); add(vt0, v0, v0);
 
   // Step 2
   sqr(w0, v1); sqr(w1, u1);
-  add(aux, w0, w0); add(w2, aux, aux); 
+  add(aux, w0, w0); add(w2, aux, aux);
   mul(w3, u1, vt1);
   mul(r, u0, w2); sub(aux, vt0, w3); mul(aux, aux, vt0);
   add(r, r, aux);
   if (r == 0) {
-    addCantor(E, D, D); 
+    addCantor(E, D, D);
     return;
   }
-  
+
   // Step 3
   negate(inv1, vt1);
   sub(inv0, vt0, w3);
@@ -444,7 +444,7 @@ static void duplicateLange(ZZ_pJac2& E, const ZZ_pJac2& D) {
     add(lp2, u1, spp0);
     mul(lp1, u1, spp0); add(lp1, lp1, u0);
     mul(lp0, u0, spp0);
-		
+
     // Step 8
     sqr(up0, spp0); mul(aux, w4, v1); add(aux, aux, aux);
     add(up0, up0, aux);
@@ -543,17 +543,15 @@ int main(int argc, char** argv) {
 
 
   long k = 100000;
-  
+
   for (int i = 0; i < k; ++i) {
     E += D;
   }
-  
+
   mul(D, k, D);
   assert (E == D);
-  
+
   return 0;
 }
 
 #endif
-
-

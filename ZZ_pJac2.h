@@ -26,12 +26,10 @@ class ZZ_pJac2InfoT {
 extern ZZ_pJac2InfoT *ZZ_pJac2Info;  // global variable for the curve
 
 class ZZ_pJac2 {
-  private:
-    
   public:
     // coordinates of the divisor
     ZZ_p u0, u1, u2, v0, v1;
-    
+
     // initialize the curve
     static void init(const ZZ_pX& f);
     static void init(const ZZ_p& f0, const ZZ_p& f1, const ZZ_p& f2,
@@ -45,14 +43,14 @@ class ZZ_pJac2 {
       v0 = V0; v1 = V1;
     }
     ~ZZ_pJac2() { }
-    
+
     // copy
     ZZ_pJac2& operator=(const ZZ_pJac2& D) {
       u0 = D.u0; u1 = D.u1; u2 = D.u2;
       v0 = D.v0; v1 = D.v1;
       return *this;
     }
-    
+
     // read-only access to the curve
     static const ZZ_p& f0() { return ZZ_pJac2Info->f0; }
     static const ZZ_p& f1() { return ZZ_pJac2Info->f1; }
@@ -60,7 +58,7 @@ class ZZ_pJac2 {
     static const ZZ_p& f3() { return ZZ_pJac2Info->f3; }
     static const ZZ_p& f4() { return ZZ_pJac2Info->f4; }
     static const ZZ_pX& f() { return ZZ_pJac2Info->f; }
-    
+
     // U and V polys
     ZZ_pX u() const;
     ZZ_pX v() const;
@@ -100,7 +98,7 @@ ZZ_pJac2 operator*(const ZZ_pJac2& D1, const ZZ& k);
 ZZ_pJac2 operator*(const ZZ& k, const ZZ_pJac2& D1);
 ZZ_pJac2 operator*(const long k, const ZZ_pJac2& D1);
 ZZ_pJac2 operator*(const ZZ_pJac2& D1, const long k);
-	
+
 
 
 // tests
